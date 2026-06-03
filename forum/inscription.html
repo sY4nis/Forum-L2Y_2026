@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Inscription </title>
+        <meta charset="UTF-8"/>
+    </head>
+
+    <body>
+        <form action="./cgi-bin/inscription.py" method="POST">
+            <div>
+                <label>Pseudo: </label>
+                <input type="text" name="pseudo"/>
+            </div>
+            <div>
+                <label>Mot de passe: </label>
+                <input type="password" name="mdp"/>
+            </div>
+            <div>
+                <label>Confirmation du mot de passe: </label>
+                <input type="password" name="confirmation"/>
+            </div>
+            <button type="submit">Valider</button>
+        </form>
+        <a href="./connexion.html">Connexion </a>
+    </body>
+</html>

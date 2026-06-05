@@ -5,18 +5,29 @@ import sqlite3
 print("Content-type:text/html; charset=utf-8")
 print()
 
+form = cgi.FieldStorage()
+id_sujet = form.getvalue('id')
+
 conn = sqlite3.connect('forum.db')
 cursor = conn.cursor()
 
-form = cgi.FieldStorage()
-titre = form.getvalue('titre')
+cursor.execute('SELECT sujets.titre FROM sujets WHERE sujets.id = ?', (id_sujet,))
+id_title = cursor.fetchall()
 
-if not titre or len(titre) < 1 :
-    print("Le nom du sujet est vide.")
-else:
-    print("Création réussie !")
+cursor.execute('SELECT message.id, message.contenu,utilisateurs.pseudo FROM message JOIN utilisateurs ON message.id_auteur = utilisateurs.id WHERE message.id_sujet = ?', (id_sujet,))
+id_content_pseudo = cursor.fetchall()
 
-    cursor.execute('INSERT INTO sujets (titre, id_auteur, date_crea) VALUES (?, ?, ?)', (titre ,1 , "2026 06 05"))
-    conn.commit()
-    
+print(id_title[0][0])
+
+for i in id_content_pseudo :
+    print(f"<p><b>{i[2]}</b> : {i[1]}</p>")
+
+print("<form action ='poster_message.py' method='POST'>")
+print("<div>")
+print("<label>Ajouter un commentaire:</label>")
+print(f"<input type='hidden' name='id_sujet' value='{id_sujet}'/>")
+print("<input type='text' name='contenu' placeholder='Votre message...'/>")
+print("</div>")
+print("<button type='submit'>Envoyer</button>")
+print("</form>")
 conn.close()

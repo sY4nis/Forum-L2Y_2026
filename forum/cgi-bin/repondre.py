@@ -9,14 +9,15 @@ conn = sqlite3.connect('forum.db')
 cursor = conn.cursor()
 
 form = cgi.FieldStorage()
-content = form.getvalue('contenu')
+reponse = form.getvalue('reponse')
 sujet= form.getvalue('id_sujet')
+parent= form.getvalue('id_parent')
 
-if len(content) == 0 :
+if len(reponse) == 0 :
     print("Un message vide ne peut pas être envoyé.") 
 else:
-    print("Réponse envoyée !")
-    cursor.execute('INSERT INTO message (contenu,id_auteur,id_sujet,id_parent,date_crea) VALUES (?,?,?,?,?)',(content,1,sujet,None,"2026 06 07"))
+    print("Commentaire envoyé !")
+    cursor.execute('INSERT INTO message (contenu,id_auteur,id_sujet,id_parent,date_crea) VALUES (?,?,?,?,?)',(reponse,1,sujet,parent,"2026 06 07"))
     conn.commit()
 
 conn.close()
